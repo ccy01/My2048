@@ -288,7 +288,7 @@ class GameView : FrameLayout {
             }
         }
 
-        AlertDialog.Builder(context).setCancelable(false).setTitle("��Ϸ����").setMessage("�㵱ǰ�ķ�����:" + MainActivity.mainActivity!!.score + "\n" + "��ʷ��߷�:" + MainActivity.mainActivity!!.highScore).setPositiveButton("����"
+        AlertDialog.Builder(context).setCancelable(false).setTitle("游戏结束").setMessage("你当前的分数是" + MainActivity.mainActivity!!.score + "\n" + "历史最高分" + MainActivity.mainActivity!!.highScore).setPositiveButton("重来"
         ) { dialog, which -> startGame() }.show()
 
     }
