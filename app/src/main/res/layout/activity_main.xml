@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.1">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/title"
+            android:textColor="@color/text_black"
+            android:textSize="64sp" />
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="81dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/label_bg1"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="@string/bestScore"
+            android:textColor="@color/text_brown"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_highscore"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_1"
+            android:layout_alignRight="@id/tv_1"
+            android:layout_below="@id/tv_1"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/label_bg"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:textColor="@color/text_white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_highscore"
+            android:layout_alignTop="@id/tv_highscore"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tv_highscore"
+            android:background="@drawable/label_bg"
+            android:gravity="center"
+            android:minWidth="50dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/text_white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_score"
+            android:layout_alignBottom="@id/tv_1"
+            android:layout_alignLeft="@id/tv_score"
+            android:layout_alignRight="@id/tv_score"
+            android:layout_alignTop="@id/tv_1"
+            android:background="@drawable/label_bg1"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="@string/score"
+            android:textColor="@color/text_brown"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_title"
+            android:layout_below="@id/tv_title"
+            android:gravity="center"
+            android:text="Join the numbers and to the 2048 title!"
+            android:textColor="@color/text_black"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignRight="@id/tv_highscore"
+            android:layout_below="@id/tv_highscore"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_rectangle">
+
+            <TextView
+                android:id="@+id/iv_restart"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/ic_action_refresh" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignBottom="@id/layout1"
+            android:layout_alignTop="@id/layout1"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/layout1"
+            android:background="@drawable/background_rectangle">
+
+            <TextView
+                android:id="@+id/iv_undo"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/ic_action_undo" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.example.ccy.my2048.GameView
+        android:id="@+id/gameView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        android:layout_weight="1.6" />
+
+</LinearLayout>
