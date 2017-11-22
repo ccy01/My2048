@@ -31,12 +31,27 @@ class GameView : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         initGameView()
+
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        Config.CARD_WIDTH = (w - 40) / 4
-        super.onSizeChanged(w, h, oldw, oldh)
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+        var width = 0
+        var height = heightSize
+
+        if (widthMode == MeasureSpec.EXACTLY) {
+            println("MeasureSpec.EXACTLY ")
+            width = widthSize
+            println(width)
+            Constant.CARD_WIDTH = (width-40) / 4
+            println(Constant.CARD_WIDTH)
+            height = width
+        }
+        setMeasuredDimension(width, height)
     }
 
     constructor(context: Context) : super(context) {
@@ -88,13 +103,12 @@ class GameView : FrameLayout {
     fun addCard(num: Int, i: Int, j: Int) {
         val c = Card(context)
         addView(c)
-        val lp = FrameLayout.LayoutParams(Config.CARD_WIDTH, Config.CARD_WIDTH)
+        val lp = FrameLayout.LayoutParams(Constant.CARD_WIDTH, Constant.CARD_WIDTH)
         c.num = num
-        lp.leftMargin = j * Config.CARD_WIDTH + 20
-        lp.topMargin = i * Config.CARD_WIDTH + 20
+        lp.leftMargin = j * Constant.CARD_WIDTH + 20
+        lp.topMargin = i * Constant.CARD_WIDTH + 20
         c.layoutParams = lp
         cardMaps[j][i] = c
-
     }
 
     fun addTempCards(num: Int, i: Int, j: Int) {
@@ -125,7 +139,7 @@ class GameView : FrameLayout {
                 for (x1 in x + 1..3) {
                     if (cardMaps[x1][y]!!.num > 0) {
                         if (cardMaps[x][y]!!.num <= 0) {
-                            createMoveAnim(cardMaps[x1][y]!!, cardMaps[x][y]!!, x1, x, y, y)
+                            createMoveAnim(cardMaps[x1][y]!!, cardMaps[x][y]!!)
                             cardMaps[x][y]!!.num = cardMaps[x1][y]!!.num
                             cardMaps[x1][y]!!.num = 0
                             x--
@@ -161,7 +175,7 @@ class GameView : FrameLayout {
                 for (x1 in x - 1 downTo 0) {
                     if (cardMaps[x1][y]!!.num > 0) {
                         if (cardMaps[x][y!!]!!.num <= 0) {
-                            createMoveAnim(cardMaps[x1][y]!!, cardMaps[x][y]!!, x1, x, y, y)
+                            createMoveAnim(cardMaps[x1][y]!!, cardMaps[x][y]!!)
                             cardMaps[x][y]!!.num = cardMaps[x1][y]!!.num
                             cardMaps[x1][y]!!.num = 0
                             x++
@@ -199,7 +213,7 @@ class GameView : FrameLayout {
                 for (y1 in y - 1 downTo 0) {
                     if (cardMaps[x][y1]!!.num > 0) {
                         if (cardMaps[x][y]!!.num <= 0) {
-                            createMoveAnim(cardMaps[x][y1]!!, cardMaps[x][y]!!, x, x, y1, y)
+                            createMoveAnim(cardMaps[x][y1]!!, cardMaps[x][y]!!)
                             cardMaps[x][y]!!.num = cardMaps[x][y1]!!.num
                             cardMaps[x][y1]!!.num = 0
                             y++
@@ -236,7 +250,7 @@ class GameView : FrameLayout {
                 for (y1 in y + 1..3) {
                     if (cardMaps[x][y1]!!.num > 0) {
                         if (cardMaps[x][y]!!.num <= 0) {
-                            createMoveAnim(cardMaps[x][y1]!!, cardMaps[x][y]!!, x, x, y1, y)
+                            createMoveAnim(cardMaps[x][y1]!!, cardMaps[x][y]!!)
                             cardMaps[x][y]!!.num = cardMaps[x][y1]!!.num
                             cardMaps[x][y1]!!.num = 0
                             y--
@@ -343,26 +357,23 @@ class GameView : FrameLayout {
         }
     }
 
-    fun createMoveAnim(from: Card, to: Card, fromX: Int, toX: Int,
-                       fromY: Int, toY: Int) {
+    fun createMoveAnim(from: Card, to: Card) {
 
         to.label.visibility = View.INVISIBLE
-        from.label.visibility = View.INVISIBLE
         val c = getCard(from.num)
-        val lp = FrameLayout.LayoutParams(Config.CARD_WIDTH, Config.CARD_WIDTH)
-        lp.leftMargin = fromX * Config.CARD_WIDTH + 20
-        lp.topMargin = fromY * Config.CARD_WIDTH + 20
+        val lp = FrameLayout.LayoutParams(Constant.CARD_WIDTH, Constant.CARD_WIDTH)
+        lp.leftMargin = from.x.toInt()
+         lp.topMargin = from.y.toInt()
         c.layoutParams = lp
 
-        val ta = TranslateAnimation(0f, (Config.CARD_WIDTH * (toX - fromX)).toFloat(), 0f, (Config.CARD_WIDTH * (toY - fromY)).toFloat())
+        val ta = TranslateAnimation(0f, (to.x - from.x), 0f, to.y - from.y)
         ta.duration = 100
         ta.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationRepeat(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
-                to.label.visibility = View.VISIBLE
-                from.label.visibility = View.VISIBLE
                 recycleCard(c)
+                to.label.visibility = View.VISIBLE
             }
         })
         c.startAnimation(ta)
@@ -393,11 +404,14 @@ class GameView : FrameLayout {
                 Animation.RELATIVE_TO_SELF, 0.5f)
         sa.duration = 100
         target.animation = null
-        target.label.startAnimation(sa)
+        target.startAnimation(sa)
+
     }
 
     fun scaleToMax(target: Card) {
         target.animation = null
-        target.label.startAnimation(AnimationUtils.loadAnimation(context, R.anim.scale))
+        target.startAnimation(AnimationUtils.loadAnimation(context, R.anim.scale))
     }
+
+
 }

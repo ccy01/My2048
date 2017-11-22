@@ -13,17 +13,12 @@ class Card(context: Context) : FrameLayout(context) {
     var num = 0
         set(num) {
             field = num
-            if (num == 0) {
-                label.text = ""
+            if (num <= 4)
                 label.setTextColor(resources.getColor(R.color.text_black))
-            } else {
-                if (num <= 4) {
-                    label.setTextColor(resources.getColor(R.color.text_black))
-                } else {
-                    label.setTextColor(resources.getColor(R.color.text_white))
-                }
-                label.text = num.toString()
-            }
+            else
+                label.setTextColor(resources.getColor(R.color.text_white))
+            label.text = if(num == 0)"" else num.toString()
+
             when (num) {
                 0 -> label.setBackgroundResource(R.drawable.cell_rectangle)
                 2 -> label.setBackgroundResource(R.drawable.cell_rectangle_2)
@@ -37,7 +32,6 @@ class Card(context: Context) : FrameLayout(context) {
                 512 -> label.setBackgroundResource(R.drawable.cell_rectangle_512)
                 1024 -> label.setBackgroundResource(R.drawable.cell_rectangle_1024)
                 2048 -> label.setBackgroundResource(R.drawable.cell_rectangle_2048)
-                else -> background.setBackgroundResource(R.drawable.cell_rectangle)
             }
         }
 
@@ -45,22 +39,18 @@ class Card(context: Context) : FrameLayout(context) {
     private val background: View
 
     init {
-        var lp: FrameLayout.LayoutParams? = null
-
+        var lp: FrameLayout.LayoutParams?
         background = View(getContext())
         lp = FrameLayout.LayoutParams(-1, -1)
         lp.setMargins(20, 20, 20, 20)
         background.setBackgroundResource(R.drawable.cell_rectangle)
         addView(background, lp)
-
         label = TextView(getContext())
         label.textSize = 32f
         label.typeface = Typeface.createFromAsset(resources.assets, "ClearSans-Bold.ttf")
         label.gravity = Gravity.CENTER
-        lp = FrameLayout.LayoutParams(-1, -1)
-        lp.setMargins(20, 20, 20, 20)
+        lp.gravity = Gravity.NO_GRAVITY
         addView(label, lp)
-        num = 0
     }
 
     override fun equals(other: Any?): Boolean {

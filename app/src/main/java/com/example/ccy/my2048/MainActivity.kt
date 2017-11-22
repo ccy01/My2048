@@ -54,14 +54,14 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         println("onResume")
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
-        for (i in 0 until Config.LINE) {
-            for (j in 0 until Config.LINE) {
-                gameView!!.addCard(settings.getInt((j + i * Config.LINE).toString(), 0), i, j)
+        for (i in 0 until Constant.LINE) {
+            for (j in 0 until Constant.LINE) {
+                gameView!!.addCard(settings.getInt((j + i * Constant.LINE).toString(), 0), i, j)
             }
         }
-        for (i in 0 until Config.LINE) {
-            for (j in 0 until Config.LINE) {
-                gameView!!.addTempCards(settings.getInt((j + i * Config.LINE).toString() + "t", 0), i, j)
+        for (i in 0 until Constant.LINE) {
+            for (j in 0 until Constant.LINE) {
+                gameView!!.addTempCards(settings.getInt((j + i * Constant.LINE).toString() + "t", 0), i, j)
             }
         }
         gameView!!.canUndo = settings.getBoolean("cando", false)
@@ -77,15 +77,15 @@ class MainActivity : AppCompatActivity() {
         println("OnPause")
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = settings.edit()
-        for (i in 0 until Config.LINE) {
-            for (j in 0 until Config.LINE) {
-                editor.putInt((j + i * Config.LINE).toString(), gameView!!.getCards(j, i).num)
+        for (i in 0 until Constant.LINE) {
+            for (j in 0 until Constant.LINE) {
+                editor.putInt((j + i * Constant.LINE).toString(), gameView!!.getCards(j, i).num)
             }
         }
         if (gameView!!.canUndo)
-            for (i in 0 until Config.LINE) {
-                for (j in 0 until Config.LINE) {
-                    editor.putInt((j + i * Config.LINE).toString() + "t", gameView!!.getTempCards(j, i).num)
+            for (i in 0 until Constant.LINE) {
+                for (j in 0 until Constant.LINE) {
+                    editor.putInt((j + i * Constant.LINE).toString() + "t", gameView!!.getTempCards(j, i).num)
                 }
             }
         editor.putBoolean("cando", gameView!!.canUndo)
