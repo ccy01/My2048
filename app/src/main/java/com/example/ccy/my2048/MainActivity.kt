@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
     private val KEY_SCORE = "score"
     val highScore: Int
         get() {
-
             val settings = PreferenceManager.getDefaultSharedPreferences(this)
             return settings.getInt(KEY_HIGH_SCORE, -1)
         }
@@ -30,8 +29,6 @@ class MainActivity : AppCompatActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
         initView()
-
-
     }
 
     fun initView() {

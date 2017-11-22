@@ -34,7 +34,6 @@ class GameView : FrameLayout {
 
     }
 
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
@@ -47,7 +46,7 @@ class GameView : FrameLayout {
             println("MeasureSpec.EXACTLY ")
             width = widthSize
             println(width)
-            Constant.CARD_WIDTH = (width-40) / 4
+            Constant.CARD_WIDTH = (width - 40) / 4
             println(Constant.CARD_WIDTH)
             height = width
         }
@@ -160,8 +159,8 @@ class GameView : FrameLayout {
         }
         if (marge) {
             canUndo = true
-            setCardS()
             addRandomNum()
+            setCardS()
             checkGameOver()
         }
     }
@@ -180,14 +179,12 @@ class GameView : FrameLayout {
                             cardMaps[x1][y]!!.num = 0
                             x++
                             marge = true
-
                         } else if (cardMaps[x][y]!! == (cardMaps[x1][y])) {
                             cardMaps[x][y]!!.num = cardMaps[x][y]!!.num * 2
                             cardMaps[x1][y]!!.num = 0
                             scaleToMax(cardMaps[x][y]!!)
                             MainActivity.mainActivity!!.addScore(cardMaps[x][y]!!.num)
                             marge = true
-
                         }
                         break
                     }
@@ -197,8 +194,8 @@ class GameView : FrameLayout {
         }
         if (marge) {
             canUndo = true
-            setCardS()
             addRandomNum()
+            setCardS()
             checkGameOver()
         }
 
@@ -218,7 +215,6 @@ class GameView : FrameLayout {
                             cardMaps[x][y1]!!.num = 0
                             y++
                             marge = true
-
                         } else if (cardMaps[x][y]!!.equals(cardMaps[x][y1])) {
                             cardMaps[x][y]!!.num = cardMaps[x][y]!!.num * 2
                             cardMaps[x][y1]!!.num = 0
@@ -235,8 +231,8 @@ class GameView : FrameLayout {
 
         if (marge) {
             canUndo = true
-            setCardS()
             addRandomNum()
+            setCardS()
             checkGameOver()
         }
 
@@ -262,7 +258,6 @@ class GameView : FrameLayout {
                             scaleToMax(cardMaps[x][y]!!)
                             MainActivity.mainActivity!!.addScore(cardMaps[x][y]!!.num)
                             marge = true
-
                         }
                         break
                     }
@@ -272,8 +267,8 @@ class GameView : FrameLayout {
         }
         if (marge) {
             canUndo = true
-            setCardS()
             addRandomNum()
+            setCardS()
             checkGameOver()
         }
     }
@@ -290,20 +285,16 @@ class GameView : FrameLayout {
 
     private fun checkGameOver() {
         ALL@ for (y in 0..3) {
-            for (x in 0..3) {
-                if (cardMaps[x][y]!!.num == 0 ||
-                        x > 0 && cardMaps[x][y]!! == (cardMaps[x - 1][y]) ||
-                        x < 3 && cardMaps[x][y]!! == (cardMaps[x + 1][y])
-                        || y > 0 && cardMaps[x][y]!! == (cardMaps[x][y - 1])
-                        || y < 3 && cardMaps[x][y]!! == (cardMaps[x][y + 1])) {
-                    return
-                }
-
-            }
+            (0..3).filter {
+                (cardMaps[it][y]!!.num == 0 ||
+                        it > 0 && cardMaps[it][y]!! == (cardMaps[it - 1][y]) ||
+                        it < 3 && cardMaps[it][y]!! == (cardMaps[it + 1][y])
+                        || y > 0 && cardMaps[it][y]!! == (cardMaps[it][y - 1])
+                        || y < 3 && cardMaps[it][y]!! == (cardMaps[it][y + 1]))
+            }.forEach { return }
         }
-
         AlertDialog.Builder(context).setCancelable(false).setTitle("游戏结束").setMessage("你当前的分数是" + MainActivity.mainActivity!!.score + "\n" + "历史最高分" + MainActivity.mainActivity!!.highScore).setPositiveButton("重来"
-        ) { dialog, which -> startGame() }.show()
+        ) { _, _ -> startGame() }.show()
 
     }
 
@@ -311,8 +302,12 @@ class GameView : FrameLayout {
         canUndo = false
         for (i in 0..3) {
             for (j in 0..3) {
-
                 cardMaps[j][i]!!.num = bufferCards[j][i]!!.num
+            }
+        }
+        for (i in 0..3) {
+            for (j in 0..3) {
+                nextCards[j][i]!!.num = cardMaps[j][i]!!.num
             }
         }
     }
@@ -338,9 +333,8 @@ class GameView : FrameLayout {
         cardList.add(temp)
     }
 
-    fun getTempCards(i: Int, j: Int): TempCard {
-        return cardList.peek()[i][j]!!
-    }
+    fun getTempCards(i: Int, j: Int) = cardList.peek()[i][j]!!
+
 
     fun initCards() {
         for (i in nextCards.indices) {
@@ -363,7 +357,7 @@ class GameView : FrameLayout {
         val c = getCard(from.num)
         val lp = FrameLayout.LayoutParams(Constant.CARD_WIDTH, Constant.CARD_WIDTH)
         lp.leftMargin = from.x.toInt()
-         lp.topMargin = from.y.toInt()
+        lp.topMargin = from.y.toInt()
         c.layoutParams = lp
 
         val ta = TranslateAnimation(0f, (to.x - from.x), 0f, to.y - from.y)
